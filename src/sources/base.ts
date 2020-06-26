@@ -63,7 +63,7 @@ export default abstract class Base {
     /**
      No need to modify below this block but if you know what you're doing, feel free to edit and/or improvise
      */
-    protected get dataToJson(): string {
+     get dataToJson(): string {
         return JSON.stringify(this.data);
     }
 

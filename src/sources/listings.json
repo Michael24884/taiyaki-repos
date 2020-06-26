@@ -3,7 +3,8 @@
     "listings": [
         {
             "name": "Vidstreaming",
-            "image": "https://vidstreaming.io/img/logo_vidstreaming.png"
+            "image": "https://vidstreaming.io/img/logo_vidstreaming.png",
+            "url": "https://raw.githubusercontent.com/Michael24884/taiyaki-repos/master/src/sources/vidstreaming.ts"
         } 
     ]
 }

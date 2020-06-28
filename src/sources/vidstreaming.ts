@@ -1,7 +1,7 @@
 import cheerio from 'react-native-cheerio';
 import Base, { Data } from './base';
 
-class Vidstreaming extends Base {
+class Vidstreaming extends SourceBase {
 
     data: Data = {
         version: "1.0.0",

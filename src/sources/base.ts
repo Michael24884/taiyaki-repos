@@ -31,7 +31,7 @@ export interface Data {
 }
 
 //Just extend a source class with Base
-export default abstract class Base {
+export default abstract class SourceBase {
     /**
     * data is converted into JSON File 
     */

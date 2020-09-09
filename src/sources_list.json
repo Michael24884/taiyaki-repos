@@ -6,7 +6,7 @@
 		"version": "1.0.0",
 
 		"searchTitles": "{ return async function scrapeTitles(title, config, params, cheerio, controller) {this.baseUrl = config.baseUrl; this.headers = config.headers; this.hasCloudflare = config.hasCloudflare; const url = this.baseUrl + '/search.html?' + params;const response = await fetch(url, { headers: this.headers, signal: controller.signal  });const text = await response.text();const $ = cheerio.load(text);return $('li.video-block').toArray().map((e) => {const newTitle = $(e).find('div.picture').find('img[src]').attr('alt');const link = `https://vidstreaming.io${$(e).find('a').attr('href')}`;const image = $(e).find('div.picture').find('img').attr('src'); return { title: newTitle, image, embedLink: link };});} }",
-		"scrapeEpisodes": "{ return async function episodes(link, cheerio, controller) { const request = await fetch(link, {signal: controller.signal});const text = await request.text();const $ = cheerio.load(text);return $('ul.listing.items.lists > li.video-block').toArray().map((element, _index) => {const epLink = $(element).find('a').attr('href');return `https://vidstreaming.io${epLink}`;}).reverse();} }",
+		"scrapeEpisodes": "{ return async function episodes(link, cheerio, controller) { const request = await fetch(link, {signal: controller?.signal});const text = await request.text();const $ = cheerio.load(text);return $('ul.listing.items.lists > li.video-block').toArray().map((element, _index) => {const epLink = $(element).find('a').attr('href');return `https://vidstreaming.io${epLink}`;}).reverse();} }",
 		"baseUrl": "https://vidstreaming.io",
 		"hasCloudflare": false,
 		"headers": {

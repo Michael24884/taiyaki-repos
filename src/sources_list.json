@@ -3,7 +3,7 @@
 		"name": "Vidstreaming",
 		"developer": "",
 		"url": "https://github.com/Michael24884/taiyaki-repos/blob/master/src/sources/vidstreaming.js",
-		"version": "1.0.0",
+		"version": "1.0.1",
 		"extraDataTitles": null,
 		"imageURL": "https://gogo-stream.com/img/logo_vidstreaming.png",
 		"searchTitles": "{ return async function scrapeTitles(title, config, qs, extraData, cheerio, controller) {this.baseUrl = config.baseUrl; this.headers = config.headers; this.hasCloudflare = config.hasCloudflare; const url = this.baseUrl + '/search.html?' + qs.stringify({keyword: title});const response = await fetch(url, { headers: this.headers, signal: controller.signal  });const text = await response.text();const $ = cheerio.load(text);return $('li.video-block').toArray().map((e) => {const newTitle = $(e).find('div.picture').find('img[src]').attr('alt');const link = `https://vidstreaming.io${$(e).find('a').attr('href')}`;const image = $(e).find('div.picture').find('img').attr('src'); return { title: newTitle, image, embedLink: link };});} }",

@@ -4,8 +4,9 @@
 		"developer": "",
 		"url": "https://github.com/Michael24884/taiyaki-repos/blob/master/src/sources/vidstreaming.js",
 		"version": "1.0.0",
-
-		"searchTitles": "{ return async function scrapeTitles(title, config, params, cheerio, controller) {this.baseUrl = config.baseUrl; this.headers = config.headers; this.hasCloudflare = config.hasCloudflare; const url = this.baseUrl + '/search.html?' + params;const response = await fetch(url, { headers: this.headers, signal: controller.signal  });const text = await response.text();const $ = cheerio.load(text);return $('li.video-block').toArray().map((e) => {const newTitle = $(e).find('div.picture').find('img[src]').attr('alt');const link = `https://vidstreaming.io${$(e).find('a').attr('href')}`;const image = $(e).find('div.picture').find('img').attr('src'); return { title: newTitle, image, embedLink: link };});} }",
+		"extraDataTitles": null,
+		"imageURL": "https://gogo-stream.com/img/logo_vidstreaming.png",
+		"searchTitles": "{ return async function scrapeTitles(title, config, qs, extraData, cheerio, controller) {this.baseUrl = config.baseUrl; this.headers = config.headers; this.hasCloudflare = config.hasCloudflare; const url = this.baseUrl + '/search.html?' + qs.stringify({keyword: title});const response = await fetch(url, { headers: this.headers, signal: controller.signal  });const text = await response.text();const $ = cheerio.load(text);return $('li.video-block').toArray().map((e) => {const newTitle = $(e).find('div.picture').find('img[src]').attr('alt');const link = `https://vidstreaming.io${$(e).find('a').attr('href')}`;const image = $(e).find('div.picture').find('img').attr('src'); return { title: newTitle, image, embedLink: link };});} }",
 		"scrapeEpisodes": "{ return async function episodes(link, cheerio, controller) { const request = await fetch(link, {signal: controller?.signal});const text = await request.text();const $ = cheerio.load(text);return $('ul.listing.items.lists > li.video-block').toArray().map((element, _index) => {const epLink = $(element).find('a').attr('href');return `https://vidstreaming.io${epLink}`;}).reverse();} }",
 		"scrapeLinks": "{ return async function availableServers(episodeLink, cheerio) {async function _prerender() {const pageData = await fetch(episodeLink);const pageText = await pageData.text();const $ = cheerio.load(pageText);const phpFile = $('div.watch_play').find('div.play-video').find('iframe').attr('src');return `https:${phpFile}`;}const directLink = await _prerender();const documentFetch = await fetch(directLink);const document = await documentFetch.text();const $ = cheerio.load(document);return $('ul.list-server-items').find('li.linkserver').toArray().map((element) => {if ($(element).attr('data-status') == '1') {const _mint = $(element).text().trim();if (_mint === 'Server Hyrax') return;if (_mint === 'Easyload') return;const hostName = $(element).text().trim();let _hostLink = $(element).attr('data-video');if (_hostLink.startsWith('/')) _hostLink = 'https:' + _hostLink;return { server: hostName, link: _hostLink };}});} }",
 		"baseUrl": "https://vidstreaming.io",
@@ -15,5 +16,24 @@
 			"Accept-Encoding": "gzip, deflate, br",
 			"User-Agent": "Mozilla/5.0 (Macintosh; Intel Max OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36 OPR/69.0.3686.36"
 		}
+	},
+	{
+		"name": "4Anime",
+		"developer": "",
+		"url": "https://github.com/Michael24884/taiyaki-repos/blob/master/src/sources/vidstreaming.js",
+		"version": "1.0.0",
+		"imageURL": "https://4anime.to/static/logo.png",
+		"extraDataTitles": "asl_active=1&p_asl_data=qtranslate_lang%3D0%26set_intitle%3DNone%26customset%255B%255D%3Danime",
+		"searchTitles": "{ return async function scrapeTitles(title, config, qs, extraData, cheerio, controller) { this.baseURL = config.baseUrl; this.headers = config.headers;const url = this.baseURL + '/?' + qs.stringify({s: title});const response = await fetch(url, {headers: this.headers, signal: controller.signal, method: 'POST',body: extraData,});const text = await response.text();const $ = cheerio.load(text);return $('#headerDIV_2 > #headerDIV_95').toArray().map((e) => {const link = $(e).find('a').attr('href');const title = $(e).find('div').text();const image = $(e).find('img').attr('src');return { title, image, embedLink: link };});} }",
+		"scrapeEpisodes": "{ return async function scrapeEpisodeFunction(episodeLink, cheerio) {const _response = await (await fetch(episodeLink)).text();const $ = cheerio.load(_response);return $('ul.episodes.range.active > li').toArray().map((e) => {return $(e).find('a').attr('href');});} }",
+		"scrapeLinks": "{return async function scrapeSingleHost(episodeLink, cheerio) {const _response = await (await fetch(episodeLink)).text();const $ = cheerio.load(_response);const html = $('div.mirror-footer.cl').find('script').html();const link = RegExp(/href=..([^\\\\]+)/);const match = html.match(link);if (match) return [{ server: 'Custom', link: match[1] }];return [];} }",
+		"baseUrl": "https://4anime.to",
+		"hasCloudflare": false,
+		"headers": {
+			"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9;imag/webp,image/apng",
+			"Accept-Encoding": "gzip, deflate, br",
+			"User-Agent": "Mozilla/5.0 (Macintosh; Intel Max OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36 OPR/69.0.3686.36"
+		}
 	}
 ]
+

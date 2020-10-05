@@ -4,6 +4,7 @@
 		"developer": "",
 		"url": "https://github.com/Michael24884/taiyaki-repos/blob/master/src/sources/vidstreaming.js",
 		"version": "1.0.1",
+                "language":"English",
 		"extraDataTitles": null,
 		"imageURL": "https://gogo-stream.com/img/logo_vidstreaming.png",
 		"searchTitles": "{ return async function scrapeTitles(title, config, qs, extraData, cheerio, controller) {this.baseUrl = config.baseUrl; this.headers = config.headers; this.hasCloudflare = config.hasCloudflare; const url = this.baseUrl + '/search.html?' + qs.stringify({keyword: title});const response = await fetch(url, { headers: this.headers });const text = await response.text();const $ = cheerio.load(text);return $('li.video-block').toArray().map((e) => {const newTitle = $(e).find('div.picture').find('img[src]').attr('alt');const link = `https://vidstreaming.io${$(e).find('a').attr('href')}`;const image = $(e).find('div.picture').find('img').attr('src'); return { title: newTitle, image, embedLink: link };});} }",
@@ -20,6 +21,7 @@
 	{
 		"name": "4Anime",
 		"developer": "",
+                "language":"English",
 		"url": "https://github.com/Michael24884/taiyaki-repos/blob/master/src/sources/vidstreaming.js",
 		"version": "1.0.0",
 		"imageURL": "https://4anime.to/static/logo.png",
@@ -37,6 +39,7 @@
 	{
 		"name": "KimAnime",
 		"developer": "",
+                "language":"English",
 		"baseUrl": "https://kimanime.ru",
 		"searchTitles": " { return async function scrapeTitles(title, source, qs, extraData, cheerio) { const param = qs.stringify({ q: title });const _response = await (await fetch(source.baseUrl + \"/?c=search&\" + param)).text();const $ = cheerio.load(_response);return $(\"div.columns2 > div.column\").toArray().map((e) => {const title = $(e).find(\"a\").text().trim();const link = $(e).find(\"a\").attr(\"href\");const image = $(e).find(\"a > img\").attr(\"src\");return {title,embedLink: source.baseUrl + link,image: source.baseUrl + image,};});} }",
 		"scrapeEpisodes": "{return async function scrapeEpisodes(episodeLink, cheerio) {const _response = await (await fetch(episodeLink)).text();const $ = cheerio.load(_response);return $(\"tbody > tr\").toArray().map((e) => {const link = $(e).find(\"td\").find(\"a\").attr(\"href\");return \"https://kimanime.ru\" + link;}).reverse();} } ",

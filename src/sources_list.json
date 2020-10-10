@@ -50,6 +50,22 @@
 			"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9;imag/webp,image/apng",
 			"User-Agent": "Mozilla/5.0 (Macintosh; Intel Max OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36 OPR/69.0.3686.36"
 		}
+	},
+	{
+		"name": "AnimePahe",
+		"language": "English",
+		"developer": "",
+		"baseUrl": "https://animepahe.com",
+		"version": "1.0.0",
+		"extraDataTitles": "",
+		"imageURL": null,
+		"searchTitles": "{return async function scrapeTitles(title, config, qs, extraData, cheerio) {const _response = await (await fetch(\"https://animepahe.com/api?m=search&l=8&q=\" + title)).json();const { data } = _response; if (data) return data.map((i) => ({title: i.title,image: i.poster,embedLink: i.id,}) ); return []}  }",
+		"scrapeEpisodes": "{ return async function scrapeLinks(link) {const url =\"https://animepahe.com/api?m=release&id=\" +link +\"&sort=episode_asc&page=1\";const _response = await (await fetch(url)).json();const { data } = _response;return data.map((i) => i.anime_id + \"-\" + i.session);} }",
+		"scrapeLinks": "{ return async function availableServers(link, cheerio) { const extraction = link.split(\"-\"); const id = extraction[0], session = extraction[1]; const url = \"https://animepahe.com/api?m=links&id=\" +id+ \"&session=\" +session + \"&p=kwik\";const _response = await (await fetch(url, {headers: {\"Accept\" : \"application/json, text/javascript, */*; q=0.01\"}})).json(); const { data } = _response; const quals = Object.values(data); return quals.map((i) => {const obj = Object.entries(i)[0];const quality = obj[0];const data = obj[1];return { server: quality + \"-kwik\", link: data.kwik };}); } }",
+		"headers": {
+			"Accept": "application/json, text/javascript, */* q=0.01",
+			"Connection": "keep-alive"
+		}
 	}
 ]
 

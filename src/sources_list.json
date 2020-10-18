@@ -56,11 +56,11 @@
 		"language": "English",
 		"developer": "",
 		"baseUrl": "https://animepahe.com",
-		"version": "1.0.1",
+		"version": "1.0.2",
 		"extraDataTitles": "",
 		"imageURL": null,
 		"searchTitles": "{return async function scrapeTitles(title, config, qs, extraData, cheerio) {const _response = await (await fetch(\"https://animepahe.com/api?m=search&l=8&q=\" + title)).json();const { data } = _response; if (data) return data.map((i) => ({title: i.title,image: i.poster,embedLink: i.id,}) ); return []}  }",
-		"scrapeEpisodes": "{ return async function scrapeLinks(link) { let hasNextPage = true; let preURL = \"https://animepahe.com/api?m=release&id=\" +link + \"&sort=episode_asc&page=1\"; const box = []; while(hasNextPage) {let url = preURL;const _response = await (await fetch(url)).json();const { data, next_page_url,  } = _response;box.push(data.map((i) => i.anime_id + \"-\" + i.session));if (next_page_url) url = next_page_url;else {hasNextPage = false;break;}} return box;} }",
+		"scrapeEpisodes": "{ return async function scrapeLinks(link) { let hasNextPage = true; let url = \"https://animepahe.com/api?m=release&id=\" +link + \"&sort=episode_asc&page=1\"; const box = []; while(hasNextPage) {const _response = await (await fetch(url)).json();const { data, next_page_url,  } = _response; box.push(data.map((i) => i.anime_id + \"-\" + i.session)); if (next_page_url) url = next_page_url;else { hasNextPage = false;break;}} return box; } }",
 		"scrapeLinks": "{ return async function availableServers(link, cheerio) { const extraction = link.split(\"-\"); const id = extraction[0], session = extraction[1]; const url = \"https://animepahe.com/api?m=links&id=\" +id+ \"&session=\" +session + \"&p=kwik\";const _response = await (await fetch(url, {headers: {\"Accept\" : \"application/json, text/javascript, */*; q=0.01\"}})).json(); const { data } = _response; const quals = Object.values(data); return quals.map((i) => {const obj = Object.entries(i)[0];const quality = obj[0];const data = obj[1];return { server: quality + \"-kwik\", link: data.kwik };}); } }",
 		"headers": {
 			"Accept": "application/json, text/javascript, */* q=0.01",

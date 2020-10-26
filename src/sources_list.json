@@ -66,6 +66,21 @@
 			"Accept": "application/json, text/javascript, */* q=0.01",
 			"Connection": "keep-alive"
 		}
+	},
+	{
+		"name": "Anime Owl",
+		"developer": "",
+		"language": "English",
+		"baseUrl": "https://animeowl.net",
+		"version": "1.0.0",
+		"extraDataTitles": "",
+		"imageURL": null,
+		"searchTitles":
+			"{ return async function scrapeTitles(title, config, qs, ed, cheerio) { const params = qs.stringify({s: title}); const request = await (await fetch('https://animeowl.net/?' + params)).text(); const $ = cheerio.load(request);return $('div.posts.row > div.post.col-6.col-sm-4.col-md-3.col-lg-2').toArray().map((e) => {const link = $(e).find('a').attr('href'); const title=$(e).find('h4').text(); const image=$(e).find('img').attr('src'); return {title, image, embedLink: link}})} }",
+
+		"scrapeEpisodes": "{ return async function scrapeEpisodes(link, cheerio) { const filteredLink = link.replace('/tv-show/', '/'); const d = await (await fetch(filteredLink)).text(); const $ = cheerio.load(d);return $('#episodes > div').toArray().map((e) => {const link = $(e).find('a').attr('href');return link;})} } ",
+		"scrapeLinks": "{ return async function scrapeLinks(link, cheerio) { const filteredLink = link.replace(\"/tv-show/\", \"/\"); const response = await (await fetch(filteredLink)).text(); const $ = cheerio.load(response);const directLink = $('div.list-server').find('button[class=\"server-number button\"]').attr('data-source');const newFetch =  await fetch('https://animeowl.net' + directLink, {headers: { Host : 'animeowl.net' }});if (newFetch.ok) {const json = await newFetch.json();const {cloud9xx} = json; const box = [];const _ = Object.entries(cloud9xx).map((i) => {box.push({link: i[1], server: i[0] + '-animeowl'});}); return box;} else { throw(\"Could not find a valid json\")}} }",
+		"headers": {}
 	}
 ]
 
